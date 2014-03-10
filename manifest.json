@@ -1,0 +1,15 @@
+{
+  "name": "ThumbChecker",
+  "version": "0.1",
+  "description": "Show the current status of PR reviews, based on emojis",
+  "manifest_version": 2,
+  "content_scripts": [ {
+    "js": [ "js/jquery-2.1.0.min.js", "js/background.js" ],
+    "css": ["css/status.css"],
+    "matches": [ "https://github.com/*"]
+  }],
+  "icons": {
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}

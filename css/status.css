@@ -1,0 +1,7 @@
+.approval-status {
+    border: 1px solid #ddd;
+    background: #f0f0f0;
+    padding: 4px;
+    color: #666;
+    font: 13px Helvetica, arial, freesans, clean, sans-serif;
+}
