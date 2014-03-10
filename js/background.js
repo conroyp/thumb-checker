@@ -18,7 +18,7 @@ if(document.URL.match(/\/pulls/g))
                         // Try to get author avatar - all the way back up the tree
                         // @TODO: Handle multiple emojis in one thread better
                         // @TODO: Neater way of climbing back up the tree
-                        var avatar = $(emoji[0]).parents().eq(7).find('img.js-avatar').attr('src');
+                        var avatar = $(emoji[0]).parents().eq(6).find('img.js-avatar').attr('src');
                         emojiString += '<img src="' + avatar +
                             '" height="16" width="16" valign="top" /> <img src="' +
                             emoji[i].src +
