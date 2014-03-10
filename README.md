@@ -17,4 +17,6 @@ Known issues
 Installation
 -----------
 * Clone the repo locally
-* In chrome, go to Tools -> Extensions -> Load unpacked extension...
+* In chrome, go to Tools -> Extensions
+* Ensure that the Developer mode checkbox in the top right-hand corner is checked
+* Select "Load unpacked extension..." and navigate to the directory of the cloned repo
