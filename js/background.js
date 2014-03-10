@@ -14,14 +14,23 @@ if(document.URL.match(/\/pulls/g))
                 if (emoji.length > 0)
                 {
                     var emojiString = '';
+                    var lastAvatar = '';
                     emoji.each(function(i){
                         // Try to get author avatar - all the way back up the tree
-                        // @TODO: Handle multiple emojis in one thread better
                         // @TODO: Neater way of climbing back up the tree
-                        var avatar = $(emoji[0]).parents().eq(6).find('img.js-avatar').attr('src');
-                        emojiString += '<img src="' + avatar +
-                            '" height="16" width="16" valign="top" /> <img src="' +
-                            emoji[i].src +
+                        var avatar = $(emoji[i]).parents().eq(6).find('img.js-avatar').attr('src');
+
+                        // Batch avatars so we only show it if it's different from
+                        // last shown, so we're not showing the same avatar multiple
+                        // times in a row if the same user has entered a stream
+                        // of emoji
+                        if (lastAvatar != avatar)
+                        {
+                            emojiString += '<img src="' + avatar +
+                            '" height="16" width="16" valign="top" /> ';
+                            lastAvatar = avatar;
+                        }
+                        emojiString += '<img src="' + emoji[i].src +
                             '" height="16" width="16" valign="top" />&nbsp;';
                     });
 
