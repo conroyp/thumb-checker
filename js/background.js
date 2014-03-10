@@ -1,5 +1,26 @@
 // Only fire if we're onthe PR page
-if(document.URL.match(/\/pulls/g))
+if(document.URL.match(/\/pulls(\/?)/g))
+{
+    processEmoji();
+}
+
+// Clicking the "My Pull Requests" links
+$('.filter-item').click(function(){
+    // Slight delay to allow ajax request to complete
+    // @TODO: Piggy-back on ajax request to make this a bit less flaky, or use
+    // mutation observers, as ajax call doesn't seem to fire when you
+    // click back and forth repeatedly between user links
+    setTimeout(processEmoji, 1000);
+});
+
+
+/**
+ * Check all PRs on the page and see if emojis have been posted on the PR
+ * pages linked.
+ *
+ * @return null
+ */
+function processEmoji()
 {
     var links = $('h4:has(> a) > a');
     links.each(function(i){
@@ -37,6 +58,7 @@ if(document.URL.match(/\/pulls/g))
                     // Get link from this page to figure out the parent
                     // we need to update
                     var parentLink = $(data).find('.tabnav-tab.selected.js-pull-request-tab').attr('href');
+                    console.log("Attach to " + parentLink);
                     // Update the link on the /pulls/ page with a "Pr status" block
                     $('h4:has(> a) > a[href$="' + parentLink + '"]').parent().append('<br /><div class="approval-status"><i>Review status: ' + emojiString + '</i></div>');
                 }
