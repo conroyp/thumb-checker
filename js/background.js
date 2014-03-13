@@ -32,6 +32,8 @@ function processEmoji()
                 // Parse the data for emoji
                 var emoji = $(data).find('img.emoji');
                 // If we find emoji, update status
+                // @TODO: Now that we're looping up from the bottom also, tidy
+                // the whole thing up to do one consolidated loop
                 if (emoji.length > 0)
                 {
                     var emojiString = '';
@@ -58,23 +60,58 @@ function processEmoji()
                     // Possible that there was a further update after the last emoji
                     // Check if the last significant entry didn't have an emoji
                     var comments = $(data).find('.js-discussion > div');
+                    var comments = comments.slice(0, comments.length-1);
 
-                    // Last item is socket-related, ignore it
-                    var lastComment = comments[comments.length-2];
-                    var lastEmoji = $(lastComment).find('img.emoji');
-                    // No emoji found? Something changed since the last one.
-                    if (lastEmoji.length == 0)
+                    // We're going to walk back up the tree to find the last emoji
+                    // and along the way keep track of any comment or commit we've
+                    // seen
+                    var lastAvatar = '';
+                    var postEmoji = '';
+                    for (var i = comments.length - 1; i >= 1; i--)
                     {
-                        var avatar = $(lastComment).find('img.js-avatar').attr('src');
-                        emojiString += '<img src="' + avatar +
-                            '" height="16" width="16" valign="top" /> ';
-                        // Add in a "speech bubble" emoticon to indicate further
-                        // conversation (may have been commit or comment - key
-                        // thing being it's a change)
-                        emojiString += '<img src="' +
-                            'https://github.global.ssl.fastly.net/images/icons/emoji/speech_balloon.png' +
-                            '" height="16" width="16" valign="top" />&nbsp;';
+                        var lastEmoji = $(comments[i]).find('img.emoji');
+                        // Emoji found? We're at ground zero. Bail out
+                        if (lastEmoji.length > 0)
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            // Was this a commit or comment?
+                            var emojiIcon = '';
+                            if ($(comments[i]).hasClass('discussion-commits'))
+                            {
+                                emojiIcon = 'https://github.global.ssl.fastly.net/images/icons/emoji/computer.png';
+                            }
+                            else
+                            {
+                                emojiIcon = 'https://github.global.ssl.fastly.net/images/icons/emoji/speech_balloon.png';
+                            }
+
+                            // Add in a "speech bubble" emoticon to indicate further
+                            // conversation (may have been commit or comment - key
+                            // thing being it's a change)
+                            postEmoji = '<img src="' + emojiIcon +
+                                '" height="16" width="16" valign="top" />&nbsp;' +
+                                postEmoji;
+                            var avatar = $(comments[i]).find('img.js-avatar').attr('src');
+                            if (avatar != lastAvatar)
+                            {
+                                // Add some spacing pre-avatar to stop summary line
+                                // getting too jumbled
+                                postEmoji = '&nbsp;&nbsp;<img src="' + avatar +
+                                    '" height="16" width="16" valign="top" /> ' +
+                                    postEmoji;
+                            }
+                        }
                     }
+
+                    // If we've any post-emoji interaction, list it
+                    if (postEmoji.length)
+                    {
+                        emojiString += postEmoji;
+                    }
+
                     // Get link from this page to figure out the parent
                     // we need to update
                     var parentLink = $(data).find('.tabnav-tab.selected.js-pull-request-tab').attr('href');
