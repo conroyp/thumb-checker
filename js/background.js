@@ -115,7 +115,7 @@ function processEmoji()
                     // Get link from this page to figure out the parent
                     // we need to update
                     var parentLink = $(data).find('.tabnav-tab.selected.js-pull-request-tab').attr('href');
-                    console.log("Attach to " + parentLink);
+
                     // Update the link on the /pulls/ page with a "Pr status" block
                     $('h4:has(> a) > a[href$="' + parentLink + '"]').parent()
                         .append('<br /><div class="approval-status"><i>Review status: ' + emojiString + '</i></div>');
