@@ -10,9 +10,7 @@ the avatar of the person who posted it.
 
 Known issues
 -----------
-* If someone posts multiple emojis, their avatar is repeated before each one
 * The traversal of the dom on the child pages is wildly inefficient
-* Currently doesn't account for further text feedback after an emoji is posted (updates required, etc)
 
 Installation
 -----------
