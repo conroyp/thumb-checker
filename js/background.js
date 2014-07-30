@@ -22,7 +22,7 @@ $('.filter-item').click(function(){
  */
 function processEmoji()
 {
-    var links = $('h4:has(> a) > a');
+    var links = $('.issue-title > a');
     links.each(function(i){
         // Fetch the page
         // Scan it for any emoji
@@ -94,7 +94,7 @@ function processEmoji()
                             postEmoji = '<img src="' + emojiIcon +
                                 '" height="16" width="16" valign="top" />&nbsp;' +
                                 postEmoji;
-                            var avatar = $(comments[i]).find('img.js-avatar').attr('src');
+                            var avatar = $(comments[i]).find('img.timeline-comment-header-gravatar').attr('src');
                             if (avatar != lastAvatar)
                             {
                                 // Add some spacing pre-avatar to stop summary line
@@ -117,7 +117,7 @@ function processEmoji()
                     var parentLink = $(data).find('.tabnav-tab.selected.js-pull-request-tab').attr('href');
 
                     // Update the link on the /pulls/ page with a "Pr status" block
-                    $('h4:has(> a) > a[href$="' + parentLink + '"]').parent()
+                    $('.issue-title > a[href$="' + parentLink + '"]').parent()
                         .append('<br /><div class="approval-status"><i>Review status: ' + emojiString + '</i></div>');
                 }
             });
