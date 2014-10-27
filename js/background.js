@@ -5,14 +5,13 @@ if(document.URL.match(/\/pulls(\/?)/g))
 }
 
 // Clicking the "My Pull Requests" links
-$('.filter-item').click(function(){
+$('.filter-item, .button-link, .issues-reset-query-wrapper').click(function(){
     // Slight delay to allow ajax request to complete
     // @TODO: Piggy-back on ajax request to make this a bit less flaky, or use
     // mutation observers, as ajax call doesn't seem to fire when you
     // click back and forth repeatedly between user links
     setTimeout(processEmoji, 1000);
 });
-
 
 /**
  * Check all PRs on the page and see if emojis have been posted on the PR
@@ -22,7 +21,7 @@ $('.filter-item').click(function(){
  */
 function processEmoji()
 {
-    var links = $('.issue-title > a');
+    var links = $('a.issue-title-link');
     links.each(function(i){
         // Fetch the page
         // Scan it for any emoji
@@ -41,7 +40,7 @@ function processEmoji()
                     emoji.each(function(i){
                         // Try to get author avatar - all the way back up the tree
                         // @TODO: Neater way of climbing back up the tree
-                        var avatar = $(emoji[i]).parents().eq(6).find('img.js-avatar').attr('src');
+                        var avatar = $(emoji[i]).closest('.timeline-comment-wrapper, .comment-holder').find('img.timeline-comment-avatar, img.avatar').attr('src');
 
                         // Batch avatars so we only show it if it's different from
                         // last shown, so we're not showing the same avatar multiple
@@ -94,7 +93,13 @@ function processEmoji()
                             postEmoji = '<img src="' + emojiIcon +
                                 '" height="16" width="16" valign="top" />&nbsp;' +
                                 postEmoji;
-                            var avatar = $(comments[i]).find('img.timeline-comment-header-gravatar').attr('src');
+
+                            var avatar = $(comments[i]).closest('.timeline-comment-wrapper, .comment-holder, .js-details-container').find('img.avatar, img.timeline-comment-avatar').attr('src');
+                            if (avatar === undefined)
+                            {
+                                avatar = $(comments[i]).find('.timeline-comment-wrapper, .comment-holder, .js-details-container').find('img.avatar, img.timeline-comment-avatar').attr('src');
+                            }
+
                             if (avatar != lastAvatar)
                             {
                                 // Add some spacing pre-avatar to stop summary line
@@ -117,7 +122,7 @@ function processEmoji()
                     var parentLink = $(data).find('.tabnav-tab.selected.js-pull-request-tab').attr('href');
 
                     // Update the link on the /pulls/ page with a "Pr status" block
-                    $('.issue-title > a[href$="' + parentLink + '"]').parent()
+                    $('a.issue-title-link[href$="' + parentLink + '"]').parent()
                         .append('<br /><div class="approval-status"><i>Review status: ' + emojiString + '</i></div>');
                 }
             });
