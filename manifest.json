@@ -1,6 +1,6 @@
 {
   "name": "ThumbChecker",
-  "version": "0.1",
+  "version": "0.2",
   "description": "Show the current status of PR reviews, based on emojis",
   "manifest_version": 2,
   "content_scripts": [ {
