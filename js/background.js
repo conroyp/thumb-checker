@@ -93,11 +93,13 @@ function processEmoji()
                             postEmoji = '<img src="' + emojiIcon +
                                 '" height="16" width="16" valign="top" />&nbsp;' +
                                 postEmoji;
+
                             var avatar = $(comments[i]).closest('.timeline-comment-wrapper, .comment-holder, .js-details-container').find('img.avatar, img.timeline-comment-avatar').attr('src');
                             if (avatar === undefined)
                             {
                                 avatar = $(comments[i]).find('.timeline-comment-wrapper, .comment-holder, .js-details-container').find('img.avatar, img.timeline-comment-avatar').attr('src');
                             }
+
                             if (avatar != lastAvatar)
                             {
                                 // Add some spacing pre-avatar to stop summary line
